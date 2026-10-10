@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toolbox - QR & URL</title>
+  <meta name="description" content="QR코드 생성과 URL 단축 기능을 제공하는 올인원 스마트 툴박스">
+  
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Glow Background -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <!-- Smart Toolbox Main Container -->
+  <main class="toolbox-viewport">
+    
+    <div class="toolbox-card" id="toolboxCard">
+      <!-- Title Section -->
+      <header class="toolbox-header">
+        <h1 class="toolbox-title">스마트 툴박스</h1>
+        <p class="toolbox-desc">원하는 기능을 선택해주세요</p>
+      </header>
+
+      <!-- Action Buttons Group -->
+      <div class="toolbox-actions">
+        
+        <!-- Button 1: QR코드 생성 -->
+        <a href="url2qr/index.html" class="toolbox-btn btn-qr" id="btnQrCode" title="QR코드 생성기로 이동">
+          <span class="btn-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+              <rect x="8" y="8" width="2" height="2"></rect>
+              <rect x="17" y="8" width="1" height="1"></rect>
+              <rect x="8" y="17" width="1" height="1"></rect>
+            </svg>
+          </span>
+          <span class="btn-label">QR코드 생성</span>
+        </a>
+
+        <!-- Button 2: URL 단축 -->
+        <a href="urlShort/index.html" class="toolbox-btn btn-short" id="btnUrlShort" title="URL 단축기로 이동">
+          <span class="btn-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+          </span>
+          <span class="btn-label">URL 단축</span>
+        </a>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

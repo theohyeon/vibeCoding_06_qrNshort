@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Smart Toolbox - Design System & Styling (Dark Modern Glassmorphism)
+   ========================================================================== */
+:root {
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple SD Gothic Neo', sans-serif;
+  
+  /* Color Palette matching user screenshot */
+  --bg-deep: #0b0e1b;
+  --bg-surface: #151a2d;
+  --bg-surface-glass: rgba(21, 26, 45, 0.92);
+  --border-card: rgba(255, 255, 255, 0.08);
+  
+  /* Text Colors */
+  --text-title: #c4b5fd;      /* Soft lavender purple */
+  --text-desc: #94a3b8;       /* Muted slate */
+  --text-btn: #ffffff;
+  
+  /* Button Gradients */
+  --grad-qr: linear-gradient(135deg, #5c60f5 0%, #6366f1 45%, #7c3aed 100%);
+  --shadow-qr: 0 10px 28px rgba(99, 102, 241, 0.45);
+  
+  --grad-short: linear-gradient(135deg, #f43f5e 0%, #fb7185 40%, #e11d48 100%);
+  --shadow-short: 0 10px 28px rgba(244, 63, 94, 0.45);
+  
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--bg-deep);
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ==========================================================================
+   Ambient Glow Background Orbs
+   ========================================================================== */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.35;
+  animation: floatOrb 12s ease-in-out infinite alternate;
+}
+
+.orb-1 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  top: -10%;
+  left: 15%;
+}
+
+.orb-2 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #e11d48 0%, transparent 70%);
+  bottom: -15%;
+  right: 15%;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+  top: 40%;
+  right: 35%;
+  animation-delay: -8s;
+  opacity: 0.2;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.08); }
+  100% { transform: translate(-25px, 25px) scale(0.95); }
+}
+
+/* ==========================================================================
+   Toolbox Viewport & Floating Card
+   ========================================================================== */
+.toolbox-viewport {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 480px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbox-card {
+  width: 100%;
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.65),
+    0 0 50px rgba(99, 102, 241, 0.12);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  animation: cardFadeUp 0.6s var(--ease-spring);
+}
+
+@keyframes cardFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   Header Titles
+   ========================================================================== */
+.toolbox-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.toolbox-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text-title);
+  text-shadow: 0 4px 20px rgba(196, 181, 253, 0.3);
+}
+
+.toolbox-desc {
+  font-size: 1.05rem;
+  color: var(--text-desc);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Action Buttons (QR코드 생성 & URL 단축)
+   ========================================================================== */
+.toolbox-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  width: 100%;
+}
+
+.toolbox-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 1.15rem 1.5rem;
+  border-radius: 20px;
+  color: var(--text-btn);
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, filter 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toolbox-btn:active {
+  transform: scale(0.98) !important;
+}
+
+/* Button 1: QR코드 생성 (Blue/Violet) */
+.btn-qr {
+  background: var(--grad-qr);
+  box-shadow: var(--shadow-qr);
+}
+
+.btn-qr:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 16px 36px rgba(99, 102, 241, 0.6);
+  filter: brightness(1.06);
+}
+
+/* Button 2: URL 단축 (Rose/Pink/Magenta) */
+.btn-short {
+  background: var(--grad-short);
+  box-shadow: var(--shadow-short);
+}
+
+.btn-short:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 16px 36px rgba(244, 63, 94, 0.6);
+  filter: brightness(1.06);
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-label {
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Responsive Queries
+   ========================================================================== */
+@media (max-width: 480px) {
+  .toolbox-viewport {
+    padding: 1rem;
+  }
+  .toolbox-card {
+    padding: 2.25rem 1.6rem;
+    border-radius: 24px;
+    gap: 1.75rem;
+  }
+  .toolbox-title {
+    font-size: 1.95rem;
+  }
+  .toolbox-desc {
+    font-size: 0.96rem;
+  }
+  .toolbox-btn {
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    border-radius: 16px;
+  }
+}

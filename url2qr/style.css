@@ -1,0 +1,727 @@
+/* ==========================================================================
+   Design System & Dynamic Variables (Warm Light Theme)
+   ========================================================================== */
+:root {
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple SD Gothic Neo', sans-serif;
+  
+  /* Dynamic Cursor Reactive Variables (Updated by script.js) */
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --cursor-raw-x: 50vw;
+  --cursor-raw-y: 50vh;
+  --hue-1: 44;   /* Warm Golden Yellow (Logo match) */
+  --hue-2: 26;   /* Soft Peach Coral */
+  --hue-3: 56;   /* Sunlit Lemon Warmth */
+  
+  /* Base Light Color Palette */
+  --bg-base: #fdfbf7;
+  --surface-card: rgba(255, 255, 255, 0.88);
+  --surface-border: rgba(245, 184, 35, 0.28);
+  --surface-border-hover: rgba(245, 184, 35, 0.65);
+  
+  /* Brand Accent (Matching Logo #f5b823) */
+  --accent-gold: #f5b823;
+  --accent-primary: #f59e0b;
+  --accent-light: #fef3c7;
+  --accent-warm: #fb923c;
+  --accent-dark: #b45309;
+  --accent-gradient: linear-gradient(135deg, #f5b823 0%, #f59e0b 50%, #ea580c 100%);
+  --accent-glow: rgba(245, 184, 35, 0.35);
+
+  /* Typography Colors (High-contrast slate for light mode) */
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-sub: #94a3b8;
+  
+  /* Transitions & Springs */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.4s var(--ease-spring);
+  --transition-smooth: 0.7s var(--ease-spring);
+  
+  /* Delicate Light Shadows */
+  --shadow-sm: 0 4px 14px rgba(217, 119, 6, 0.08);
+  --shadow-md: 0 10px 30px rgba(217, 119, 6, 0.12);
+  --shadow-lg: 0 20px 45px -10px rgba(217, 119, 6, 0.16), 0 0 35px rgba(245, 184, 35, 0.12);
+  --shadow-glow: 0 0 35px var(--accent-glow);
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-family);
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ==========================================================================
+   Interactive Dynamic Cursor Gradient System
+   ========================================================================== */
+.interactive-bg-wrapper {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Base warm mesh background */
+.mesh-gradient-base {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 15% 15%, #fff7ed 0%, transparent 50%),
+    radial-gradient(circle at 85% 85%, #fef3c7 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, #fdfbf7 0%, #f8f5ee 100%);
+  opacity: 0.9;
+}
+
+/* Live Interactive Gradient reacting to Cursor Position & Hue */
+.interactive-gradient {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  background: 
+    radial-gradient(circle at var(--mouse-x) var(--mouse-y), 
+      hsla(var(--hue-1), 95%, 75%, 0.38) 0%, 
+      hsla(var(--hue-2), 90%, 80%, 0.22) 35%, 
+      transparent 70%),
+    radial-gradient(circle at calc(100% - var(--mouse-x)) calc(100% - var(--mouse-y)), 
+      hsla(var(--hue-3), 90%, 78%, 0.32) 0%, 
+      transparent 55%),
+    radial-gradient(circle at calc(var(--mouse-x) * 0.7 + 20%) calc(var(--mouse-y) * 0.7 + 10%), 
+      hsla(var(--hue-2), 92%, 84%, 0.28) 0%, 
+      transparent 50%);
+  filter: blur(60px);
+  transition: background 0.15s ease-out;
+}
+
+/* Cursor Follower Glow (Organic Spotlight) */
+.cursor-follower-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  left: var(--cursor-raw-x);
+  top: var(--cursor-raw-y);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, 
+    hsla(var(--hue-1), 95%, 72%, 0.25) 0%, 
+    hsla(var(--hue-2), 90%, 80%, 0.12) 40%, 
+    transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* ==========================================================================
+   Header (Top-Left Logo with Warm Styling)
+   ========================================================================== */
+.app-header {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.5rem;
+  width: 100%;
+}
+
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 184, 35, 0.3);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.08);
+  transition: all var(--transition-fast);
+}
+
+.logo-container:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--accent-gold);
+  box-shadow: 0 8px 24px rgba(245, 184, 35, 0.2);
+}
+
+.brand-logo {
+  height: 42px;
+  width: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.brand-tag {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  background: var(--accent-light);
+  border: 1px solid rgba(245, 184, 35, 0.4);
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+}
+
+.action-ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  border-radius: 24px;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.action-ghost-btn:hover {
+  color: var(--text-main);
+  background: #ffffff;
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.15);
+}
+
+/* ==========================================================================
+   Main Layout & Stages
+   ========================================================================== */
+.main-container {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem 6.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-section {
+  text-align: center;
+  max-width: 720px;
+  margin-bottom: 2.75rem;
+  transition: opacity 0.5s ease, transform 0.5s var(--ease-spring), max-height 0.6s ease, margin 0.5s ease;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  background: rgba(254, 243, 199, 0.85);
+  border: 1.5px solid rgba(245, 184, 35, 0.45);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1.35rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(245, 184, 35, 0.15);
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
+.highlight-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.hero-desc {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   QR Result Section (Center stage when generated)
+   ========================================================================== */
+.qr-result-section {
+  display: none;
+  opacity: 0;
+  transform: scale(0.88) translateY(20px);
+  transition: opacity 0.5s ease, transform 0.6s var(--ease-spring);
+  margin-bottom: 2.5rem;
+  z-index: 20;
+}
+
+.generated-state .qr-result-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.qr-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+}
+
+/* The QR Card - Pristine White with Warm Border & Depth */
+.qr-card {
+  position: relative;
+  background: #ffffff;
+  padding: 1.85rem;
+  border-radius: 30px;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(245, 184, 35, 0.35);
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease, border-color 0.3s ease;
+  overflow: hidden;
+  user-select: none;
+}
+
+.qr-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: var(--accent-gold);
+  box-shadow: 0 28px 60px -12px rgba(217, 119, 6, 0.28), 0 0 45px rgba(245, 184, 35, 0.25);
+}
+
+.qr-canvas-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 240px;
+  min-height: 240px;
+  background: #ffffff;
+}
+
+.qr-canvas-container img,
+.qr-canvas-container canvas {
+  display: block;
+  width: 240px !important;
+  height: 240px !important;
+  border-radius: 12px;
+}
+
+/* Hover Overlay with Light Frosted Glassmorphism */
+.qr-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 28px;
+  pointer-events: none;
+}
+
+.qr-card:hover .qr-overlay {
+  opacity: 1;
+}
+
+.overlay-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(245, 184, 35, 0.45);
+  transform: translateY(10px);
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.qr-card:hover .overlay-icon-wrap {
+  transform: translateY(0);
+}
+
+.overlay-text {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+  letter-spacing: -0.01em;
+}
+
+/* Card Info & Badges */
+.qr-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.download-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(245, 184, 35, 0.4);
+  color: var(--accent-dark);
+  padding: 0.65rem 1.35rem;
+  border-radius: 30px;
+  font-size: 0.94rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(12px);
+}
+
+.download-guide-btn strong {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.download-guide-btn:hover {
+  background: #ffffff;
+  border-color: var(--accent-gold);
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(245, 184, 35, 0.22);
+}
+
+.current-url-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 440px;
+  padding: 0.45rem 1.1rem;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.url-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  flex-shrink: 0;
+}
+
+.url-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Input Stage (Moves to Bottom when Generated)
+   ========================================================================== */
+.input-stage {
+  width: 100%;
+  max-width: 680px;
+  transition: transform var(--transition-smooth), opacity var(--transition-normal);
+  z-index: 30;
+}
+
+/* State Transitions */
+.initial-state .hero-section {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.initial-state .input-stage {
+  transform: translateY(0);
+}
+
+/* In Generated State: Hero collapses, Input smoothly moves to bottom */
+.generated-state .hero-section {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+
+.generated-state .input-stage {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 640px;
+  padding: 0 1rem;
+}
+
+.url-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--surface-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.8px solid var(--surface-border);
+  border-radius: 999px;
+  padding: 0.5rem 0.6rem 0.5rem 1.35rem;
+  box-shadow: 0 15px 40px rgba(217, 119, 6, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s var(--ease-spring), background 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  background: #ffffff;
+  border-color: var(--accent-gold);
+  box-shadow: 0 20px 50px rgba(217, 119, 6, 0.18), 0 0 25px rgba(245, 184, 35, 0.25);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  color: var(--accent-primary);
+  margin-right: 0.9rem;
+  transition: color var(--transition-fast);
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: var(--accent-gold);
+}
+
+.url-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: var(--text-main);
+  padding: 0.65rem 0;
+}
+
+.url-input::placeholder {
+  color: var(--text-sub);
+  font-size: 0.98rem;
+}
+
+/* Icon tools: Paste, Clear */
+.icon-tool-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.icon-tool-btn:hover {
+  color: var(--accent-dark);
+  background: rgba(245, 184, 35, 0.15);
+}
+
+/* Submit Button */
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--accent-gradient);
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem 1.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  box-shadow: 0 6px 20px rgba(245, 184, 35, 0.45);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.submit-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 25px rgba(245, 184, 35, 0.6);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.submit-btn:hover svg {
+  transform: translateX(2px);
+}
+
+.input-hint {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  transition: opacity 0.3s ease;
+}
+
+.generated-state .input-hint {
+  display: none;
+}
+
+/* Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.shake {
+  animation: shake 0.4s var(--ease-spring);
+  border-color: #ef4444 !important;
+}
+
+@keyframes qrPop {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   Toast Notification (Warm Glass Pill)
+   ========================================================================== */
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(245, 184, 35, 0.45);
+  border-radius: 999px;
+  padding: 0.8rem 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--text-main);
+  font-size: 0.96rem;
+  font-weight: 600;
+  box-shadow: 0 16px 40px rgba(217, 119, 6, 0.18), 0 0 25px rgba(245, 184, 35, 0.2);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.45s var(--ease-spring);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(245, 184, 35, 0.4);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 1.25rem 1.25rem;
+  }
+  
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+  }
+
+  .qr-card {
+    padding: 1.35rem;
+  }
+
+  .qr-canvas-container img,
+  .qr-canvas-container canvas {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .generated-state .input-stage {
+    bottom: 1.25rem;
+    padding: 0 0.75rem;
+  }
+
+  .submit-btn {
+    padding: 0.7rem 1.35rem;
+    font-size: 0.92rem;
+  }
+}

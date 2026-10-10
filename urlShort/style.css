@@ -1,0 +1,509 @@
+/* ==========================================================================
+   URL 단축기 (urlShort) - Dark Mint / Indigo Modern Theme (Matches Screenshot)
+   ========================================================================== */
+:root {
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple SD Gothic Neo', sans-serif;
+  
+  /* Dark Colors matching screenshot */
+  --bg-deep: #0a0e1a;
+  --bg-card: rgba(20, 27, 45, 0.94);
+  --border-card: rgba(255, 255, 255, 0.08);
+  
+  /* Input fields */
+  --bg-input: #0e1422;
+  --border-input: rgba(255, 255, 255, 0.09);
+  --border-input-focus: #10b981;
+  
+  /* Accent Colors */
+  --accent-mint: #2dd4bf;      /* Mint / Emerald for Title */
+  --accent-blue: #3b82f6;      /* Blue for Copy button */
+  --accent-blue-hover: #2563eb;
+  
+  /* Typography */
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-placeholder: #475569;
+  
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Ambient Subtle Background */
+.dark-ambient-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.22;
+}
+
+.glow-1 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, #0d9488 0%, transparent 70%);
+  top: 10%;
+  left: 20%;
+}
+
+.glow-2 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #2563eb 0%, transparent 70%);
+  bottom: 10%;
+  right: 20%;
+}
+
+/* ==========================================================================
+   Viewport & Central Card (Matches Screenshot Exactly)
+   ========================================================================== */
+.shortener-viewport {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 560px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shortener-card {
+  width: 100%;
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
+  border-radius: 26px;
+  padding: 2.5rem 2.5rem;
+  box-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.65),
+    0 0 40px rgba(13, 148, 136, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  animation: cardIn 0.5s var(--ease-spring);
+}
+
+@keyframes cardIn {
+  0% { opacity: 0; transform: translateY(20px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Card Top Navigation */
+.card-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.back-link:hover {
+  color: #f1f5f9;
+  transform: translateX(-2px);
+}
+
+.switch-qr-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #38bdf8;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.switch-qr-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Card Header: Mint Title + Subtitle */
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.card-title {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--accent-mint);
+  letter-spacing: -0.025em;
+  text-shadow: 0 4px 20px rgba(45, 212, 191, 0.3);
+}
+
+.card-desc {
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Form Rows (Row 1: Input + Shorten / Row 2: Output + Copy)
+   ========================================================================== */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  width: 100%;
+}
+
+.input-row-form,
+.output-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.input-field-wrap,
+.output-field-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.dark-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-input);
+  border-radius: 14px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.98rem;
+  padding: 0.95rem 1.1rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dark-input:focus {
+  border-color: var(--border-input-focus);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.dark-input::placeholder {
+  color: var(--text-placeholder);
+  font-size: 0.94rem;
+}
+
+.read-only-input {
+  cursor: text;
+  color: #5eead4;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.read-only-input:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.field-clear-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 50%;
+}
+
+.field-clear-btn:hover {
+  color: #f1f5f9;
+}
+
+/* Dark Action Buttons */
+.dark-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.95rem 1.5rem;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s var(--ease-spring);
+  min-width: 100px;
+}
+
+.dark-action-btn:active {
+  transform: scale(0.97);
+}
+
+/* Button 1: 단축하기 (Disabled vs Active) */
+.shorten-btn {
+  background: #0d9488;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.35);
+}
+
+.shorten-btn:not(:disabled):hover {
+  background: #14b8a6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(20, 184, 166, 0.45);
+}
+
+.shorten-btn:disabled {
+  background: #1e293b;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.shorten-btn.loading .spinner {
+  display: inline-block;
+}
+
+/* Button 2: 복사 (Blue from screenshot) */
+.copy-btn {
+  background: var(--accent-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+}
+
+.copy-btn:hover {
+  background: var(--accent-blue-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45);
+}
+
+/* ==========================================================================
+   Alert Modal Dialog: "복사하였습니다"
+   ========================================================================== */
+.alert-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 26, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 1.5rem;
+}
+
+.alert-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.alert-modal-card {
+  width: 100%;
+  max-width: 400px;
+  background: #141b2d;
+  border: 1px solid var(--border-card);
+  border-radius: 24px;
+  padding: 2.25rem 2rem;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.alert-modal-backdrop.open .alert-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-badge-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.35);
+  margin-bottom: 1.25rem;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.modal-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.modal-url-box {
+  width: 100%;
+  background: #0e1422;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  font-family: monospace;
+  font-size: 0.92rem;
+  color: var(--accent-mint);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 1.5rem;
+}
+
+.modal-btn-confirm {
+  width: 100%;
+  background: var(--accent-blue);
+  color: #ffffff;
+  border: none;
+  outline: none;
+  padding: 0.85rem;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.modal-btn-confirm:hover {
+  background: var(--accent-blue-hover);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  background: rgba(30, 41, 59, 0.95);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  z-index: 1100;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s var(--ease-spring), opacity 0.25s ease;
+}
+
+.toast.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.input-field-wrap.shake {
+  animation: shakeX 0.4s ease-in-out;
+}
+.input-field-wrap.shake .dark-input {
+  border-color: #ef4444 !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .shortener-viewport {
+    padding: 1rem;
+  }
+  .shortener-card {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    gap: 1.5rem;
+  }
+  .card-title {
+    font-size: 1.85rem;
+  }
+  .input-row-form,
+  .output-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dark-action-btn {
+    width: 100%;
+    padding: 0.85rem;
+  }
+}

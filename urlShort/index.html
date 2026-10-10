@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL 단축기</title>
+  <meta name="description" content="긴 URL을 짧고 간편하게 만드세요. 실시간 OpenAPI를 통한 간편한 단축 링크 생성 서비스">
+  
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Dark Ambient Background -->
+  <div class="dark-ambient-bg" aria-hidden="true">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+  </div>
+
+  <!-- Main Viewport -->
+  <main class="shortener-viewport">
+    
+    <!-- Central Dark Card (Matches Screenshot Exactly) -->
+    <div class="shortener-card" id="shortenerCard">
+      
+      <!-- Top Action: Back to Toolbox -->
+      <div class="card-top-nav">
+        <a href="../index.html" class="back-link" title="스마트 툴박스로 돌아가기">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>뒤로가기</span>
+        </a>
+
+        <!-- Switch to QR Generator -->
+        <a href="../url2qr/index.html" class="switch-qr-link" title="QR 코드 생성기로 이동">
+          <span>QR 코드 생성기</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Header Section: Title in Mint/Emerald + Subtitle -->
+      <header class="card-header">
+        <h1 class="card-title">URL 단축기</h1>
+        <p class="card-desc">긴 URL을 짧고 간편하게 만드세요</p>
+      </header>
+
+      <!-- Form Section: Two Rows matching screenshot -->
+      <div class="form-container">
+        
+        <!-- Row 1: URL Input + '단축하기' Button -->
+        <form class="input-row-form" id="shortenForm" autocomplete="off" onsubmit="return false;">
+          <div class="input-field-wrap" id="inputFieldWrap">
+            <input 
+              type="text" 
+              id="shortenUrlInput" 
+              class="dark-input" 
+              placeholder="단축할 URL을 입력하세요 (https://...)" 
+              aria-label="단축할 URL 입력"
+              spellcheck="false"
+            />
+            <button type="button" class="field-clear-btn" id="clearBtn" title="입력 지우기" style="display: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <!-- '단축하기' 버튼 (빈 값이면 disabled) -->
+          <button type="submit" class="dark-action-btn shorten-btn" id="shortenBtn" disabled>
+            <span class="spinner" id="btnSpinner" aria-hidden="true"></span>
+            <span class="btn-text" id="btnText">단축하기</span>
+          </button>
+        </form>
+
+        <!-- Row 2: Read-only Output + '복사' Button -->
+        <div class="output-row">
+          <div class="output-field-wrap">
+            <input 
+              type="text" 
+              id="shortenedResultInput" 
+              class="dark-input read-only-input" 
+              readonly 
+              value="" 
+              placeholder="단축된 URL이 여기에 표시됩니다"
+              aria-label="단축된 URL 결과 상자"
+            />
+          </div>
+
+          <!-- '복사' 버튼 (Blue button from screenshot) -->
+          <button type="button" class="dark-action-btn copy-btn" id="copyBtn">
+            <span>복사</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Alert Modal Dialog: "복사하였습니다" -->
+  <div class="alert-modal-backdrop" id="alertModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="alert-modal-card">
+      <div class="modal-badge-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h3 class="modal-title" id="modalTitle">복사하였습니다</h3>
+      <p class="modal-desc">단축된 URL이 클립보드에 복사되었습니다.<br>원하는 곳에 바로 붙여넣기(Ctrl+V) 하세요.</p>
+      
+      <div class="modal-url-box" id="modalUrlPreview">
+        -
+      </div>
+
+      <button type="button" class="modal-btn-confirm" id="modalConfirmBtn">확인</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive">
+    <span class="toast-message" id="toastMessage">안내 메시지</span>
+  </div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
